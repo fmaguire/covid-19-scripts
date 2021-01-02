@@ -24,3 +24,25 @@ Requires gffutils and pandas to work:
     >>> test/test1_ivar_variants.tsv: ['aa:N:R203K', 'aa:N:G204R', 'snp:N:G28882A', 'aa:S:D614G', 'snp:non-coding:C241T', 'aa:orf1ab:P4715L', 'snp:orf1ab:C3037T', 'snp:orf1ab:T7288C', 'snp:orf1ab:A14199G']
     >>> test/test2_ivar_variants.tsv: ['aa:N:R203K', 'aa:N:G204R', 'snp:non-coding:C241T', 'snp:orf1ab:C3037T', 'snp:orf1ab:T7288C']
 
+
+## Lineage Assignments
+
+Generate pangolin and nextclade lineage assignments before collating results
+into a single table containing version metadata for tools and data dependencies
+
+### Installation
+
+Requires nextclade and pangolin to work:
+
+    conda env create -f https://raw.githubusercontent.com/cov-lineages/pangolin/master/environment.yml
+    conda activate pangolin
+    pip install git+https://github.com/cov-lineages/pangolin
+    pip install git+https://github.com/cov-lineages/pangoLEARN.git --upgrade
+    pip install git+https://github.com/cov-lineages/lineages.git --upgrade
+    conda install -y nodejs 
+    npm install --global @neherlab/nextclade
+
+### Usage 
+
+    python assign_lineages.py --input_genomes test/genomes.fa --output lineages.tsv
+
