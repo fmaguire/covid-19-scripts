@@ -22,12 +22,15 @@ def summarise_ivar_variants(ivar_file, reference_gff_db):
     then translate the mutations using summarise_ivar_mutations
     """
     var_df = pd.read_csv(ivar_file, sep='\t')
+    if var_df.empty:
+        return pd.DataFrame()
 
     var_df['isolate'] = ivar_file
     var_df = var_df.set_index('isolate')
 
     var_df['CDS_Product'] = var_df['GFF_FEATURE'].apply(lambda gff_feat: ref_db[gff_feat].attributes['Parent'][0] if not pd.isnull(gff_feat) else 'non-coding')
     var_df['CDS_Product'] = var_df['CDS_Product'].str.replace('gene-', '')
+
     var_df['Mutations'] = var_df.apply(describe_ivar_mutations, axis=1)
     return var_df
 
@@ -68,7 +71,8 @@ def parse_inputs(variant_file_list, ref_db):
 	# remove any inadvertent duplicate input files
 	for ivar_variant_file in set(variant_file_list):
 		ivar_variants = summarise_ivar_variants(ivar_variant_file, ref_db)
-		results.append(ivar_variants)
+		if not ivar_variants.empty:
+			results.append(ivar_variants)
 	results = pd.concat(results)
 	results = results.sort_values('isolate')
 	return results
@@ -79,7 +83,8 @@ def generate_output(results, output_type):
 	Summarise and prepare outputs
 	"""
 	if args.output_type == "tsv":
-		print(results)
+		results.to_csv('summary.tsv', sep='\t')
+		print("Results printed to summary.tsv")
 	elif args.output_type == 'summary':
 		variant_sets = results.groupby('isolate')['Mutations']
 		variant_sets = variant_sets.apply(list)
