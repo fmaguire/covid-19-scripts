@@ -46,3 +46,18 @@ Requires nextclade and pangolin to work:
 
     python assign_lineages.py --input_genomes test/genomes.fa --output lineages.tsv
 
+## Extract Sequences
+
+Extract sequences and metadata from nextstrain ingested GISAID dumps based on a 
+pandas query of the metadata e.g. all P.1 sequences.
+
+### Installation
+
+Requires pandas and biopython to work:
+    
+    conda create -n extract_sequences biopython pandas
+    conda activate extract_sequences
+
+### Usage
+
+    python extract_seqs.py --nextmeta metadata_2021-01-08_18-19.tsv --nextfasta sequences_2021-01-08_08-46.fasta --query "pangolin_lineage=='B.1.1.28'" --output_prefix filt_test 
