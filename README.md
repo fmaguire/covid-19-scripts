@@ -61,3 +61,30 @@ Requires pandas and biopython to work:
 ### Usage
 
     python extract_seqs.py --nextmeta metadata_2021-01-08_18-19.tsv --nextfasta sequences_2021-01-08_08-46.fasta --query "pangolin_lineage=='B.1.1.28'" --output_prefix filt_test 
+
+ 
+## Variant Intersections
+
+Quick tool that uses the [upset_plotly](https://github.com/fmaguire/upset_plotly) 
+library (a plotly version of [upsetplot](https://pypi.org/project/UpSetPlot/))
+to parse the outputs of a variant checking tool and generate an interactive
+upsetplot showing the co-occurrence of specific variants.
+
+Supported inputs:
+
+1. Output csv from [type_variants](https://github.com/cov-ert/type_variants) (must be run with --append-genotypes)
+2. Output from [ncov-watch.py](https://github.com/jts/ncov-random-scripts).
+
+### Installation
+    
+    python -m pip install git+git://github.com/fmaguire/upset_plotly
+
+### Usage
+
+To create a plot for an output from `type_variants`:
+   
+    python variant_intersections.py -i variant_check.tsv -t type_variants -o example.html 
+
+### Output
+
+![](data/example.png)
