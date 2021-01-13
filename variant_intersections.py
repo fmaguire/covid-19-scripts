@@ -72,6 +72,8 @@ def variant_intersections(input_file: Path, input_type: str, output_path: Path):
 
     fig = plot.upset_plotly(variant_sets, "Shared Variants Across Samples")
 
+    variant_sets.to_csv(str(output_path) + ".tsv", sep='\t')
+
     if output_path.suffix == '.html':
         fig.write_html(str(output_path))
     elif output_path.suffix == '.png':
