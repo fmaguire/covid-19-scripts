@@ -16,13 +16,16 @@ def check_file(path: str) -> Path:
     else:
         raise argparse.ArgumentTypeError(f"{path} can't be read")
 
-def filter_metadata(metadata_fp, query):
+def filter_metadata(metadata_fp, query, include_reference):
     """
     Parse and filter metadata
     """
     df = pd.read_csv(str(metadata_fp), sep='\t')
-    df = df.query(query)
-    return df
+    filt_df = df.query(query)
+    if include_reference:
+        ref_df = df[df['strain'].isin(['Wuhan/Hu-1/2019', 'Wuhan/WH01/2019'])]
+        filt_df = pd.concat([filt_df, ref_df])
+    return filt_df
 
 
 def filter_seqs(seqs_fp, filtered_metadata):
@@ -60,10 +63,15 @@ if __name__ == "__main__":
                          help="Pandas query e.g., \"pangolin_lineage=='B.1.1.28'\"")
     parser.add_argument("-o", "--output_prefix", default="filtered",
                         help="Prefix for output filtered metadata and seqs")
+    parser.add_argument("-r", "--include_reference", default=False,
+                        action='store_true',
+                        help="Include Wuhan/Hu-1/2019 & Wuhan/WH01/2019")
+
 
     args = parser.parse_args()
 
-    filtered_metadata = filter_metadata(args.nextmeta, args.query)
+    filtered_metadata = filter_metadata(args.nextmeta, args.query,
+                                        args.include_reference)
 
     filtered_seqs = filter_seqs(args.nextfasta, filtered_metadata)
 
