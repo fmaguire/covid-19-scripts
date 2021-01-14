@@ -88,3 +88,23 @@ To create a plot for an output from `type_variants`:
 ### Output
 
 ![](data/example.png)
+
+## Get Canadian Postcode Longitude/Latitude
+
+Goes through a nextmeta formatted metadata tsv and for any Canadian postcode
+entered into the location field (not already in ncov `lat_long.tsv` file) 
+uses `pgeocode` to get the correct latitude and longitude.
+
+This geolocation information is then appended to the ncov `lat_long.tsv` file
+and output wherever the user specifies.
+
+### Installation
+
+Required pandas and pgeocode
+    
+    conda create -n pgeocode pandas pip
+    pytohn -m pip install pgeocode
+
+### Usage 
+
+    python get_lat_long_for_postcode.py --metadata metadata_2021-01-08_18-19.tsv --lat_longs lat_longs.tsv --output custom_lat_longs.tsv
