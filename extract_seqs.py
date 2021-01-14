@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import gzip
 from pathlib import Path
 from Bio import SeqIO
 import pandas as pd
@@ -34,7 +35,13 @@ def filter_seqs(seqs_fp, filtered_metadata):
     """
     seq_names = set(filtered_metadata['strain'].values)
     filtered_seqs = []
-    for record in SeqIO.parse(str(seqs_fp), 'fasta'):
+
+    if str(seqs_fp).endswith('.gz'):
+        fh = gzip.open(seqs_fp, "rt")
+    else:
+        fh = open(seqs_fp, "r")
+
+    for record in SeqIO.parse(fh, 'fasta'):
         if record.id in seq_names:
             filtered_seqs.append(record)
     return filtered_seqs
