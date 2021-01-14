@@ -108,3 +108,18 @@ Required pandas and pgeocode
 ### Usage 
 
     python get_lat_long_for_postcode.py --metadata metadata_2021-01-08_18-19.tsv --lat_longs lat_longs.tsv --output custom_lat_longs.tsv
+
+
+## Extract mutations from nextclade
+
+Takes a nextclade output tsv and extracts the mutations/deletions for all (default) or a specific gene
+
+### Installation
+
+Requires pandas 
+
+### Usage 
+
+    python collect_mutations.py --metadata metadata.tsv --nextclade nextclade.csv --gene S --output metadata_with_mutations.tsv
+
+
