@@ -47,8 +47,8 @@ def add_mutations_to_metadata(metadata, nextclade, gene):
     """
     Add mutations/deletions to metadata file
     """
-    nextclade[f"{gene}_mutations/deletion"] = nextclade.apply(lambda x: extract_protein_changes(x, gene), axis=1)
-    metadata[f"{gene}_mutations/deletion"] = nextclade[f"{gene}_mutations/deletion"]
+    nextclade[f"{gene} mutation/deletion sets"] = nextclade.apply(lambda x: extract_protein_changes(x, gene), axis=1)
+    metadata[f"{gene} mutation/deletion sets"] = nextclade[f"{gene} mutation/deletion sets"]
     return metadata
 
 
@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    nextclade = pd.read_csv(args.nextclade_output, sep=';').set_index('seqName')
+    nextclade = pd.read_csv(args.nextclade_output, sep='\t').set_index('seqName')
 
     metadata =  pd.read_csv(args.metadata, sep='\t').set_index('strain')
 
