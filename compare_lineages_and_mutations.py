@@ -144,7 +144,7 @@ def summarise_report(report, report_title, output):
             if fig:
                 f.write(fig.to_html(full_html=False, include_plotlyjs='cdn'))
             else:
-                f.write(f"<br>No change in {category}</br>")
+                f.write(f"<br>No change in {category.replace('_', ' ').title()}</br>")
 
         # too big to plot effectively so just dumping table into
         # sheet for now
@@ -182,6 +182,7 @@ if __name__ == "__main__":
     previous = pd.read_csv(args.previous, sep='\t')
     current = pd.read_csv(args.current, sep='\t')
 
-    report_title = f"{args.previous.parts[0]}\nvs\n{args.current.parts[0]}"
+    report_title = f"Canada {args.previous.parts[0]} vs {args.current.parts[0]}" \
+                   f"<br>{len(current) - len(previous)} new genomes"
     report = compare_metadata_files(previous, current)
     summarise_report(report, report_title, args.output)
