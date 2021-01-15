@@ -43,12 +43,13 @@ def extract_protein_changes(row, gene):
     return changes
 
 
-def add_mutations_to_metadata(metadata, nextclade, gene):
+def add_mutations_to_metadata(metadata, nextclade, genes):
     """
     Add mutations/deletions to metadata file
     """
-    nextclade[f"{gene} mutation/deletion sets"] = nextclade.apply(lambda x: extract_protein_changes(x, gene), axis=1)
-    metadata[f"{gene} mutation/deletion sets"] = nextclade[f"{gene} mutation/deletion sets"]
+    for gene in genes.split(','):
+        nextclade[f"{gene} mutation/deletion sets"] = nextclade.apply(lambda x: extract_protein_changes(x, gene), axis=1)
+        metadata[f"{gene} mutation/deletion sets"] = nextclade[f"{gene} mutation/deletion sets"]
     return metadata
 
 
@@ -61,7 +62,7 @@ if __name__ == "__main__":
                          help="Path to nextmeta formatted metadata")
     parser.add_argument("-o", "--output", default="metadata_with_mutations.tsv",
                          help="Output path for metadata tsv with mutations")
-    parser.add_argument("-g", "--gene", default="all", help="Gene for which to"
+    parser.add_argument("-g", "--genes", default="all,S", help="Genes for which to"
                          " extract mutations/deletions")
 
     args = parser.parse_args()
@@ -70,6 +71,6 @@ if __name__ == "__main__":
 
     metadata =  pd.read_csv(args.metadata, sep='\t').set_index('strain')
 
-    metadata = add_mutations_to_metadata(metadata, nextclade, args.gene)
+    metadata = add_mutations_to_metadata(metadata, nextclade, args.genes)
 
     metadata.reset_index().to_csv(args.output, sep='\t', index=False)
