@@ -2,6 +2,21 @@
 
 Repository to keep track of miscellaneous SARS-CoV-2 analysis scripts
 
+## Check for newer pangolin/pangoLEARN version
+
+Script to check the installed version of pangolin and pangoLEARN
+and recommend 
+
+### Installation
+
+Only uses standard library (although will error if pangolin isn't installed at all)
+
+### Usage
+
+    python check_for_newer_pangolin_pangolearn.py
+    >>> Latest pangolin already installed: pangolin v2.1.7
+    >>> Latest pangoLEARN model already installed: pangoLEARN data release 2021-01-22
+
 ## Summarise Ivar
 
 Quick script to translate and provide quick human readable breakdown of 
