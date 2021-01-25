@@ -19,6 +19,20 @@ def check_file(path: str) -> Path:
         raise argparse.ArgumentTypeError(f"{path} can't be read")
 
 
+def update_pangolin():
+    """
+    Ensure pangolin is updated to the latest release
+    """
+    subprocess.check_output(["pangolin", "--update"])
+
+
+def update_nextclade():
+    """
+    Ensure nextclade is updated to the latest release
+    """
+    subprocess.check_output(["npm", "install", "-g", "@neherlab/nextclade"])
+
+
 def run_nextclade(input_genomes, threads):
     """
     Execute nextclade and collect assignments
@@ -133,8 +147,10 @@ if __name__ == '__main__':
                         help="Output file for collated assignment table")
     args = parser.parse_args()
 
+    update_pangolin()
     pangolin = run_pangolin(args.input_genomes, args.threads)
 
+    update_nextclade()
     nextclade = run_nextclade(args.input_genomes, args.threads)
 
     collate_output(nextclade, pangolin, args.output)
