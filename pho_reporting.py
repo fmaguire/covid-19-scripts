@@ -118,4 +118,4 @@ if __name__ == '__main__':
                       how='outer',
                       validate='one_to_one')
 
-    output.to_csv(args.output)
+    output.to_csv(args.output, index=False, sep='\t')
