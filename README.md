@@ -2,20 +2,26 @@
 
 Repository to keep track of miscellaneous SARS-CoV-2 analysis scripts
 
-## Check for newer pangolin/pangoLEARN version
 
-Script to check the installed version of pangolin and pangoLEARN
-and recommend 
+## SNP Comparison plot
+
+    snp_analysis_plot.py
+
+Quick script that generates a heatmap figure from a series of SnpEff annotated freebayes generated VCF files (ideally SARS-CoV-2).  
 
 ### Installation
 
-Only uses standard library (although will error if pangolin isn't installed at all)
+Requires pandas pyvcf and searborn:
+    
+    conda create -n snp_analysis pandas pyvcf seaborn
+    conda activate snp_analysis
 
 ### Usage
 
-    python check_for_newer_pangolin_pangolearn.py
-    >>> Latest pangolin already installed: pangolin v2.1.7
-    >>> Latest pangoLEARN model already installed: pangoLEARN data release 2021-01-22
+    python snp_analysis_plot.py -n test_snp_plot test/21-B1428411R.ann.vcf test/21-B1428413R.ann.vcf test/21-B1428417R.ann.vcf test/21-B1428418R.ann.vcf
+    >>> Writing figure to test_snp_plot_passaging_all.png
+
+![](./test/test_snp_plot_passaging_all.png)
 
 ## Summarise Ivar
 

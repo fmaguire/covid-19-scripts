@@ -114,6 +114,7 @@ if __name__ == '__main__':
     genome_df = genome_completeness(args.input_genomes, args.reference,
                                     args.threads)
 
+    genome_df.to_csv('test.csv', sep='\t')
     output = pd.merge(pangolin_df, genome_df, on='SPECIMEN_ID',
                       how='outer',
                       validate='one_to_one')

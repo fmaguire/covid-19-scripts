@@ -88,11 +88,6 @@ def run_pangolin(input_genomes, threads):
     pangolearn_version = pangolearn_version.stdout.decode('utf-8').strip()
     pangolin_df['pangoLEARN_version'] = pangolearn_version
 
-    lineage_version = subprocess.run("pangolin --lineages-version".split(),
-                                      stdout=subprocess.PIPE)
-    lineage_version = lineage_version.stdout.decode('utf-8').strip()
-    pangolin_df['pangolin_lineage_version'] = lineage_version
-
     pangolin_version = subprocess.run("pangolin --version".split(),
                                       stdout=subprocess.PIPE)
     pangolin_version = pangolin_version.stdout.decode('utf-8').strip()
@@ -103,7 +98,7 @@ def run_pangolin(input_genomes, threads):
                                         'lineage': 'pangolin_lineage',
                                         'status': 'pangolin_qc',
                                         'note': 'pangolin_note',
-                                        'probability': 'pangolin_lineage_probability'})
+                                        'conflict': 'pangolin_lineage_conflicts'})
 
     # remove temp output
     shutil.rmtree(output_dir)
@@ -118,7 +113,7 @@ def collate_output(nextclade, pangolin, output):
     merged_df = pangolin.merge(nextclade, on='isolate', how='outer')
 
     merged_df = merged_df[['isolate', 'pangolin_lineage',
-                           'pangolin_lineage_probability', 'pangolin_note',
+                           'pangolin_lineage_conflicts', 'pangolin_note',
                            'pangolin_qc', 'nextstrain_clade',
                            'nextclade_qc', 'nextclade_errors',
                            'totalGaps', 'totalInsertions', 'totalMissing',
@@ -130,7 +125,7 @@ def collate_output(nextclade, pangolin, output):
                            'totalAminoacidSubstitutions',
                            'aaDeletions', 'totalAminoacidDeletions',
                            'alignmentStart', 'alignmentEnd', 'alignmentScore',
-                           'pangolin_version', 'pangolin_lineage_version',
+                           'pangolin_version',
                            'pangoLEARN_version', 'nextclade_version']]
     merged_df.to_csv(output, sep='\t', index=False)
 
